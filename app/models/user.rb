@@ -13,10 +13,10 @@ class User < ActiveRecord::Base
     stein: "Jill Stein",
     johnson: "Gary Johnson",
     other: "Other",
-  }
+  }.with_indifferent_access
 
-  enum supported: CANDIDATES.keys.map { |k| "supported_#{k}" }
-  enum desired: CANDIDATES.keys.map { |k| "desired_#{k}" }
+  enum supported: CANDIDATES.keys, _prefix: true
+  enum desired: CANDIDATES.keys, _prefix: true
 
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)
