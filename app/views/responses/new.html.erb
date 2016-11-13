@@ -1,0 +1,37 @@
+<%= render partial: 'description' %>
+<hr>
+<%= form_tag(controller: 'responses', action: 'create') %>
+  <div class="form-group">
+    <%= label_tag(:first_name, "First Name") %>
+    <%= text_field(:user, :first_name, readonly: true, class: 'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:last_name, "Last Name") %>
+    <%= text_field(:user, :last_name, readonly: true, class: 'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:email, "Email") %>
+    <%= text_field(:user, :email, readonly: true, class: 'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:zip, "Zip Code") %>
+    <%= text_field(:user, :zip, class: 'form-control', pattern: '\d{5}([\-]\d{4})?', required: true) %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:supported, "In this election, I supported") %>
+    <%= select(:user, :supported, User::CANDIDATES.map { |k,v| [v, "supported_#{k}"] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:desired, "I would like to speak to someone who supported") %>
+    <%= select(:user, :desired, User::CANDIDATES.map { |k,v| [v, "desired_#{k}"] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:background, "What did you want to be when you grew up? How did you come to that idea?") %>
+    <%= text_area(:user, :background, class: 'form-control', required: true) %>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:submit, "Click the button below to agree and submit!") %>
+    <%= submit_tag("I will be a nice human being and promise to come to the conversation with a learning attitude", class: 'btn btn-default btn-lg btn-block') %>
+  </div>
+  <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+</form>
