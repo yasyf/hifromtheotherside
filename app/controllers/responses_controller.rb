@@ -4,6 +4,8 @@ class ResponsesController < ApplicationController
   def index
     if current_user.present? && current_user.supported.blank?
       redirect_to action: :new
+    elsif current_user.blank?
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
 
