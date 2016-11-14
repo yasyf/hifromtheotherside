@@ -19,11 +19,11 @@
   </div>
   <div class="form-group">
     <%= label_tag(:supported, "In this election, I supported") %>
-    <%= select(:user, :supported, User.supporteds.keys.map { |k| [User::CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
+    <%= select(:user, :supported, User.supporteds.keys.map { |k| [User::SUPPORTED_CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
   </div>
   <div class="form-group">
     <%= label_tag(:desired, "I would like to speak to someone who supported") %>
-    <%= select(:user, :desired, User.desireds.keys.map { |k| [User::CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
+    <%= select(:user, :desired, User.desireds.keys.map { |k| [User::DESIRED_CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
   </div>
   <div class="form-group">
     <%= label_tag(:background, "What did you want to be when you grew up? How did you come to that idea?") %>

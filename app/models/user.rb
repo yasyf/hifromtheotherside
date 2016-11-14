@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  CANDIDATES = {
+  SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
     clinton: "Hillary Clinton",
     stein: "Jill Stein",
@@ -15,8 +15,15 @@ class User < ActiveRecord::Base
     other: "Other",
   }.with_indifferent_access
 
-  enum supported: CANDIDATES.keys, _prefix: true
-  enum desired: CANDIDATES.keys, _prefix: true
+  DESIRED_CANDIDATES = {
+    trump: "a Donald Trump supporter",
+    clinton: "a Hillary Clinton supporter",
+    independent: "an independent candidate supporter",
+    anyone: "anyone who didn't support my candidate",
+  }.with_indifferent_access
+
+  enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
+  enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)
