@@ -2,31 +2,39 @@
 <hr>
 <%= form_tag(controller: 'responses', action: 'create') %>
   <div class="form-group">
-    <%= label_tag(:first_name, "First Name") %>
-    <%= text_field(:user, :first_name, readonly: true, class: 'form-control') %>
+    <div class="row">
+      <div class="col-lg-6">
+        <%= label_tag(:first_name, "First Name") %>
+        <%= text_field(:user, :first_name, readonly: true, class: 'form-control') %>
+      </div>
+      <div class="col-lg-6">
+        <%= label_tag(:last_name, "Last Name") %>
+        <%= text_field(:user, :last_name, readonly: true, class: 'form-control') %>
+      </div>
+    </div>
   </div>
   <div class="form-group">
-    <%= label_tag(:last_name, "Last Name") %>
-    <%= text_field(:user, :last_name, readonly: true, class: 'form-control') %>
-  </div>
-  <div class="form-group">
-    <%= label_tag(:email, "Email") %>
+    <%= label_tag(:email, "Email Address") %>
+    <p class="help-block">If you get matched, we'll send an email introducing you two.</p>
     <%= text_field(:user, :email, readonly: true, class: 'form-control') %>
   </div>
   <div class="form-group">
     <%= label_tag(:zip, "Zip Code") %>
-    <%= text_field(:user, :zip, class: 'form-control', pattern: '\d{5}([\-]\d{4})?', required: true) %>
+    <p class="help-block">Enter your zip code if you want the chance to be matched with someone close to you for a face-to-face conversation.</p>
+    <%= text_field(:user, :zip, class: 'form-control', pattern: '\d{5}([\-]\d{4})?') %>
   </div>
   <div class="form-group">
-    <%= label_tag(:supported, "In this election, I supported") %>
+    <%= label_tag(:supported, "In this election, I supported:") %>
+    <p class="help-block">Please pick one even if you did not vote.</p>
     <%= select(:user, :supported, User.supporteds.keys.map { |k| [User::SUPPORTED_CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
   </div>
   <div class="form-group">
-    <%= label_tag(:desired, "I would like to speak to someone who supported") %>
+    <%= label_tag(:desired, "I would like to speak to someone who supported:") %>
     <%= select(:user, :desired, User.desireds.keys.map { |k| [User::DESIRED_CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
   </div>
   <div class="form-group">
-    <%= label_tag(:background, "What did you want to be when you grew up? How did you come to that idea?") %>
+    <%= label_tag(:background, "A bit about you") %>
+    <p class="help-block">What did you want to be when you grew up? How did you come to that idea? Any other comments?</p>
     <%= text_area(:user, :background, class: 'form-control', required: true) %>
   </div>
   <div class="form-group">
