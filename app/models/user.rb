@@ -33,4 +33,8 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
     end
   end
+
+  def self.in_zip_range(start, finish, scope=all)
+    scope.select {|u| u.zip.to_i >= start && u.zip.to_i <= finish }
+  end
 end
