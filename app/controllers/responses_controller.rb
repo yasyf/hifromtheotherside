@@ -19,7 +19,7 @@ class ResponsesController < ApplicationController
     current_user.update user_params
     if current_user.valid?
       current_user.save!
-      flash[:notice] << "Preferences saved!"
+      flash[:notice] = "Preferences saved!"
       redirect_to action: :index
     else
       flash[:alert] = current_user.errors.messages
