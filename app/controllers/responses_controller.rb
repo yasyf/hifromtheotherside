@@ -1,4 +1,6 @@
 class ResponsesController < ApplicationController
+  protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token, except: [:create]
   before_action :authenticate_user!, except: [:index]
 
   def index
