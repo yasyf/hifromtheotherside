@@ -3,6 +3,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook]
 
+  validates :desired, presence: true, if: :filled_out_form?
+  validates :supported, presence: true, if: :filled_out_form?
+  validates :email, presence: true, if: :filled_out_form?
+  validates :first_name, presence: true, if: :filled_out_form?
+  validates :last_name, presence: true, if: :filled_out_form?
+  validates :background, presence: true, if: :filled_out_form?
+
   SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
     clinton: "Hillary Clinton",
@@ -20,6 +27,10 @@ class User < ActiveRecord::Base
 
   enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
+
+  def filled_out_form?
+    desired.present? || supported.present?
+  end
 
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)

@@ -16,9 +16,15 @@ class ResponsesController < ApplicationController
   end
 
   def create
-    current_user.update! user_params
-    flash.notice = "Preferences saved!"
-    redirect_to action: :index
+    current_user.update user_params
+    if current_user.valid?
+      current_user.save!
+      flash[:notice] << "Preferences saved!"
+      redirect_to action: :index
+    else
+      flash[:alert] = current_user.errors.messages
+      redirect_to action: :new
+    end
   end
 
   private
