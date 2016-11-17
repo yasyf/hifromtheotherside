@@ -22,6 +22,6 @@ class ResponsesController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:zip, :supported, :desired, :background)
+    params.require(:user).permit(:zip, :supported, :desired, :background, :email)
   end
 end
