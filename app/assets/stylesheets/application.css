@@ -14,7 +14,7 @@
  *= require_self
  */
 
-.form-group.required .control-label:after {
+.form-group.required label:after {
   content:"*";
   color:red;
 }
