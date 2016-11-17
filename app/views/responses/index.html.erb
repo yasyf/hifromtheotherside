@@ -1,8 +1,6 @@
 <% if current_user.present? %>
   <h1 class='text-success'>Thanks for signing up!</h1>
   <h2>We'll shoot you an email when we've found you a match.</h2>
-  <hr>
-  <%= render partial: 'description' %>
 <% else %>
   <%= link_to "Login With Facebook To Continue", user_facebook_omniauth_authorize_path, class: 'btn btn-lg btn-block btn-primary' %>
 <% end %>
