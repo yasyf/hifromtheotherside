@@ -1,0 +1,29 @@
+<h1>Admin - user list</h1>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <td>#</td>
+      <td>Email</td>
+      <td>Created</td>
+      <td>Zip</td>
+      <td>Supported</td>
+      <td>Desired</td>
+      <td>Background</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+        <td><%= user.created_at %></td>
+        <td><%= user.zip %></td>
+        <td><%= user.supported %></td>
+        <td><%= user.desired %></td>
+        <td><%= user.background %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
