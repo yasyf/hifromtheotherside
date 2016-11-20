@@ -1,6 +1,6 @@
 class ResponsesController < ApplicationController
   skip_before_action :verify_authenticity_token, except: [:create]
-  before_action :authenticate_user!, except: [:index] unless Rails.env.development?
+  skip_before_action :authenticate!, only: [:index]
 
   def index
     if current_user.present? && current_user.supported.blank?
