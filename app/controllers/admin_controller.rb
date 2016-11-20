@@ -21,7 +21,7 @@ class AdminController < ApplicationController
   def pair
     user = User.find(params[:id])
     Pairing.pair!(user, user.possible_pairing)
-    render js: '$("[data-dismiss=modal]").trigger({ type: "click" });'
+    render js: '$("[data-dismiss=modal]").trigger({ type: "click" }); location.reload();'
   end
 
   private
