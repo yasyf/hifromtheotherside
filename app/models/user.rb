@@ -34,8 +34,15 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)
+    info = graph.get_object("me", fields: 'first_name, last_name, email')
+
+    from_email = where(email: info['email']).first
+    if from_email.present?
+      from_email.update! provider: auth.provider, uid: auth.uid
+      return from_email
+    end
+
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|
-      info = graph.get_object("me", fields: 'first_name, last_name, email')
       user.assign_attributes info.slice('first_name', 'last_name', 'email')
       user.password = Devise.friendly_token[0,20]
     end
