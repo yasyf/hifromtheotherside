@@ -3,12 +3,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook]
 
-  validates :desired, presence: true, if: :filled_out_form?
-  validates :supported, presence: true, if: :filled_out_form?
-  validates :email, presence: true, if: :filled_out_form?
-  validates :first_name, presence: true, if: :filled_out_form?
-  validates :last_name, presence: true, if: :filled_out_form?
-  validates :background, presence: true, if: :filled_out_form?
+  validates :desired, presence: true, if: :completed?
+  validates :supported, presence: true, if: :completed?
+  validates :email, presence: true, if: :completed?
+  validates :first_name, presence: true, if: :completed?
+  validates :last_name, presence: true, if: :completed?
+  validates :background, presence: true, if: :completed?
   validates :subscribe, inclusion: [true, false]
   validates :paired, inclusion: [true, false]
 
@@ -30,8 +30,11 @@ class User < ActiveRecord::Base
   enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
-  def filled_out_form?
-    desired.present? || supported.present?
+  scope :unpaired, -> { where(paired: false) }
+  scope :completed, -> { where.not(desired: nil, supported: nil) }
+
+  def completed?
+    desired.present? && supported.present?
   end
 
   def name
@@ -44,7 +47,7 @@ class User < ActiveRecord::Base
 
   def possible_pairing
     @possible_pairing ||= begin
-      scope = self.class.where(supported: desired, paired: false)
+      scope = self.class.unpaired.where(supported: desired)
       by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
       by_zip.first || scope.first
     end

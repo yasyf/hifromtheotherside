@@ -7,7 +7,7 @@ class AdminController < ApplicationController
       return
     end
 
-    @users = User.where(paired: false).order(:created_at).take(USER_LIMIT)
+    @users = User.completed.unpaired.order(:created_at).take(USER_LIMIT)
   end
 
   def pair
