@@ -68,7 +68,7 @@
           <p><%= user.background %></p>
           <% if user.pairing.present? %>
             <h4>Pairing</h4>
-            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported.titleize %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.name %>.</p>
+            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported.titleize %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.email %>.</p>
             <p><%= user.pairing.background %></p>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
@@ -78,7 +78,11 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <a class="btn btn-primary" href="<%= pair_admin_path(user.id) %>" data-method="post" data-remote="true">Pair</a>
+          <% if user.pairing.present? %>
+            <a class="btn btn-primary" href="mailto:<%= user.email %>,<%= user.pairing.email %>?subject=<%=h "Hi From The Other Side" %>">Email</a>
+          <% elsif user.possible_pairing.present? %>
+            <a class="btn btn-primary" href="<%= pair_admin_path(user.id) %>" data-method="post" data-remote="true">Pair</a>
+          <% end %>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
