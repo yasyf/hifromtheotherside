@@ -1,24 +1,14 @@
-class AdminController < ActionController::Base
-  protect_from_forgery with: :exception
+class AdminController < ApplicationController
   before_action :authenticate_user!
 
+  USER_LIMIT = 100000
+
   def index
-    if not current_user.present?
+    unless ENV['ADMINS'].split(',').include? current_user&.uid
       render status: :forbidden
       return
     end
 
-    admin_uids = [
-      "10157774150465553" # Josh G
-    ]
-
-    if not admin_uids.include? current_user.uid
-      render status: :forbidden
-      return
-    end
-
-    @users = User.order(:id).take(100000)
-
-    render layout: "application"
+    @users = User.order(:id).take(USER_LIMIT)
   end
 end
