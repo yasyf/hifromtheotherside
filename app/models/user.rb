@@ -33,26 +33,6 @@ class User < ActiveRecord::Base
   scope :unpaired, -> { where(paired: false) }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
 
-  def completed?
-    desired.present? && supported.present?
-  end
-
-  def name
-    "#{first_name} #{last_name}"
-  end
-
-  def pairings
-    Pairing.where(user_1: self).or(Pairing.where(user_2: self))
-  end
-
-  def possible_pairing
-    @possible_pairing ||= begin
-      scope = self.class.unpaired.where(supported: desired)
-      by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
-      by_zip.first || scope.first
-    end
-  end
-
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)
     info = graph.get_object("me", fields: 'first_name, last_name, email')
@@ -75,5 +55,40 @@ class User < ActiveRecord::Base
 
   def self.export(scope=where(subscribe: true), options={})
     scope.as_json({methods: [:name], only: [:email, :desired, :supported]}.reverse_merge(options))
+  end
+
+  def completed?
+    desired.present? && supported.present?
+  end
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def pairings
+    Pairing.where(user_1: self).or(Pairing.where(user_2: self))
+  end
+
+  def possible_pairing
+    @possible_pairing ||= begin
+      scope = self.class.unpaired.where(supported: desired_supported)
+      by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
+      by_zip.first || scope.first
+    end
+  end
+
+  private
+
+  def desired_supported
+    case desired.to_sym
+    when :trump
+      :trump
+    when :clinton
+      :clinton
+    when :independent
+      [:stein, :johnson]
+    when :anyone
+      SUPPORTED_CANDIDATES.keys
+    end
   end
 end
