@@ -1,28 +1,58 @@
 <h1>Users</h1>
 
-<table class="table">
+<table class="table table-striped table-bordered table-hover">
   <thead>
     <tr>
-      <td>ID</td>
+      <td>Name</td>
       <td>Email</td>
       <td>Created</td>
       <td>Zip</td>
       <td>Supported</td>
       <td>Desired</td>
-      <td>Background</td>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |user| %>
-      <tr>
-        <td><%= user.id %></td>
+      <tr title="<%= user.background %>" data-toggle="modal" data-target="#modal_<%= user.id %>" class="clickable">
+        <td><%= user.name %></td>
         <td><%= user.email %></td>
-        <td><%= user.created_at %></td>
+        <td><%= user.created_at.to_s(:short) %></td>
         <td><%= user.zip %></td>
-        <td><%= user.supported %></td>
-        <td><%= user.desired %></td>
-        <td><%= user.background %></td>
+        <td><%= user.supported.titleize %></td>
+        <td><%= user.desired.titleize %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<% @users.each do |user| %>
+  <div class="modal fade" tabindex="-1" role="dialog" id="modal_<%= user.id %>">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h3 class="modal-title"><%= user.name %></h3>
+        </div>
+        <div class="modal-body">
+          <p>
+            A <%= user.supported.titleize %> supporter who wants to talk to someone who supported <%= user.desired.titleize %>.
+            <% if user.zip.present? %>
+              He or she lives at zip code <%= user.zip %>.
+            <% end %>
+          </p>
+          <h4>Background</h4>
+          <p><%= user.background %></p>
+          <% if user.possible_pairing.present? %>
+            <h4>Suggested Pairing</h4>
+            <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported.titleize %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>.</p>
+            <p><%= user.possible_pairing.background %></p>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a class="btn btn-primary" href="<%= pair_admin_path(user.id) %>" data-method="post" data-remote="true">Pair</a>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+<% end %>

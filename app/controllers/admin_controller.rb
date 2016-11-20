@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  USER_LIMIT = 100
+  USER_LIMIT = 50
 
   def index
     unless ENV['ADMINS'].split(',').include? current_user&.uid
@@ -7,6 +7,12 @@ class AdminController < ApplicationController
       return
     end
 
-    @users = User.order(:id).take(USER_LIMIT)
+    @users = User.where(paired: false).order(:created_at).take(USER_LIMIT)
+  end
+
+  def pair
+    user = User.find(params[:id])
+    Pairing.pair!(user, user.possible_pairing)
+    render js: '$("[data-dismiss=modal]").trigger({ type: "click" });'
   end
 end

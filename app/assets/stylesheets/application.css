@@ -18,3 +18,7 @@
   content:"*";
   color:red;
 }
+
+.clickable {
+  cursor: pointer;
+}

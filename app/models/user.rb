@@ -43,9 +43,11 @@ class User < ActiveRecord::Base
   end
 
   def possible_pairing
-    scope = self.class.where(supported: desired, paired: false)
-    by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
-    by_zip.first || scope.first
+    @possible_pairing ||= begin
+      scope = self.class.where(supported: desired, paired: false)
+      by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
+      by_zip.first || scope.first
+    end
   end
 
   def self.from_omniauth(auth)
