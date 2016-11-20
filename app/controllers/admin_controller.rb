@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  USER_LIMIT = 100000
+  USER_LIMIT = 100
 
   def index
     unless ENV['ADMINS'].split(',').include? current_user&.uid

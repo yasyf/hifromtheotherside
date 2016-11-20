@@ -10,33 +10,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161120072926) do
+ActiveRecord::Schema.define(version: 20161120083402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "pairings", force: :cascade do |t|
+    t.integer  "user_1_id",  null: false
+    t.integer  "user_2_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_1_id", "user_2_id"], name: "index_pairings_on_user_1_id_and_user_2_id", unique: true, using: :btree
+    t.index ["user_1_id"], name: "index_pairings_on_user_1_id", using: :btree
+    t.index ["user_2_id", "user_1_id"], name: "index_pairings_on_user_2_id_and_user_1_id", unique: true, using: :btree
+    t.index ["user_2_id"], name: "index_pairings_on_user_2_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",   null: false
-    t.string   "encrypted_password",     default: "",   null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,    null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.string   "first_name",             default: "",   null: false
-    t.string   "last_name",              default: "",   null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "first_name",             default: "",    null: false
+    t.string   "last_name",              default: "",    null: false
     t.string   "zip"
     t.integer  "supported"
     t.integer  "desired"
     t.text     "background"
     t.string   "provider"
     t.string   "uid"
-    t.boolean  "subscribe",              default: true, null: false
+    t.boolean  "subscribe",              default: true,  null: false
+    t.boolean  "paired",                 default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

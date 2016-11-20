@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true, if: :filled_out_form?
   validates :background, presence: true, if: :filled_out_form?
   validates :subscribe, inclusion: [true, false]
+  validates :paired, inclusion: [true, false]
 
   SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
@@ -35,6 +36,16 @@ class User < ActiveRecord::Base
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def pairings
+    Pairing.where(user_1: self).or(Pairing.where(user_2: self))
+  end
+
+  def possible_pairing
+    scope = self.class.where(supported: desired, paired: false)
+    by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
+    by_zip.first || scope.first
   end
 
   def self.from_omniauth(auth)
