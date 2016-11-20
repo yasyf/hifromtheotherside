@@ -33,6 +33,10 @@ class User < ActiveRecord::Base
     desired.present? || supported.present?
   end
 
+  def name
+    "#{first_name} #{last_name}"
+  end
+
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)
     info = graph.get_object("me", fields: 'first_name, last_name, email')
@@ -51,5 +55,9 @@ class User < ActiveRecord::Base
 
   def self.in_zip_range(start, finish, scope=all)
     scope.select {|u| u.zip.to_i >= start && u.zip.to_i <= finish }
+  end
+
+  def self.export(scope=where(subscribe: true), options={})
+    scope.as_json({methods: [:name], only: [:email, :desired, :supported]}.reverse_merge(options))
   end
 end
