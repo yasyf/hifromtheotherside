@@ -7,6 +7,8 @@
     <title><%= content_for?(:title) ? yield(:title) : "Hi From The Other Side" %></title>
     <%= csrf_meta_tags %>
 
+    <%= yield(:meta) %>
+
     <%= stylesheet_link_tag "application", :media => "all" %>
 
     <%= javascript_include_tag "application" %>
