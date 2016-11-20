@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, if: :filled_out_form?
   validates :last_name, presence: true, if: :filled_out_form?
   validates :background, presence: true, if: :filled_out_form?
+  validates :subscribe, inclusion: [true, false]
 
   SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
