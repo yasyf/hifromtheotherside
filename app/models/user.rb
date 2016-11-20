@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
+  scope :paired, -> { where(paired: true) }
   scope :unpaired, -> { where(paired: false) }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
 
