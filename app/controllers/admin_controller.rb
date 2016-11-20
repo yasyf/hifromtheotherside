@@ -7,7 +7,7 @@ class AdminController < ApplicationController
       return
     end
 
-    scope = User.completed
+    scope = User.order(:created_at).completed
     if paired?
       scope = scope.paired
       @title = 'Paired Users'
@@ -15,7 +15,8 @@ class AdminController < ApplicationController
       scope = scope.unpaired
       @title = 'Unpaired Users'
     end
-    @users = scope.order(:created_at).take(USER_LIMIT)
+    @pages = scope.count / USER_LIMIT
+    @users = scope.limit(USER_LIMIT).offset(page * USER_LIMIT)
   end
 
   def pair
@@ -25,6 +26,10 @@ class AdminController < ApplicationController
   end
 
   private
+
+  def page
+    @page ||= params[:page].present? ? params[:page].to_i : 0
+  end
 
   def paired?
     @paired ||= params[:paired]&.downcase == 'true'

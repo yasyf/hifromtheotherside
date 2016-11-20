@@ -1,13 +1,7 @@
 <% content_for(:title) { @title } %>
 
-<div><h1><%= @title %></h1></div>
-
-<div>
-  <p>
-    <a href="<%= admin_index_path(paired: !@paired) %>" class='btn btn-lg btn-default'>
-     Go To <%= @paired ? 'Unpaired' : 'Paired'%> Users
-    </a>
-  </p>
+<div style='padding-bottom: 20px;'>
+  <p><h1><%= @title %></h1></p>
 </div>
 
 <div>
@@ -35,6 +29,24 @@
       <% end %>
     </tbody>
   </table>
+
+  <nav>
+    <ul class="pager" style="padding-top: 10px;">
+      <% if @page > 0 %>
+        <li><a href="<%= admin_index_path(paired: @paired, page: @page - 1) %>">Previous</a></li>
+      <% end %>
+      <% if @page < @pages - 1 %>
+        <li><a href="<%= admin_index_path(paired: @paired, page: @page + 1) %>">Next</a></li>
+      <% end %>
+    </ul>
+    <ul class="pager" style="margin-top: -10px;">
+      <li>
+        <a href="<%= admin_index_path(paired: !@paired) %>">
+         <%= @paired ? 'Unpaired' : 'Paired'%> Users
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>
 
 <% @users.each do |user| %>
@@ -54,10 +66,10 @@
           </p>
           <h4>Background</h4>
           <p><%= user.background %></p>
-          <% if user.pairings.present? %>
+          <% if user.pairing.present? %>
             <h4>Pairing</h4>
-            <p><%= user.first_name %> is paired with <%= user.pairings.first.name %>, a <%= user.pairings.first.supported.titleize %> supporter<% if user.pairings.first.zip.present? %> from <%= user.pairings.first.zip %><% end %>. Their email is <%= user.pairings.first.name %>.</p>
-            <p><%= user.pairings.first.background %></p>
+            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported.titleize %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.name %>.</p>
+            <p><%= user.pairing.background %></p>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
             <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported.titleize %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>.</p>

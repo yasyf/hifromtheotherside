@@ -67,8 +67,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def pairings
-    Pairing.where(user_1: self).or(Pairing.where(user_2: self))
+  def pairing
+    return nil unless pairings.present?
+    pair = pairings.first
+    pair.user_1 == self ? pair.user_2 : pair.user_1
   end
 
   def possible_pairing
@@ -80,6 +82,10 @@ class User < ActiveRecord::Base
   end
 
   private
+
+  def pairings
+    @pairings ||= Pairing.where(user_1: self).or(Pairing.where(user_2: self))
+  end
 
   def desired_supported
     case desired.to_sym
