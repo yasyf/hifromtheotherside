@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
     when :independent
       [:stein, :johnson]
     when :anyone
-      SUPPORTED_CANDIDATES.keys
+      SUPPORTED_CANDIDATES.keys - [supported]
     end
   end
 end
