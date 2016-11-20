@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
 
   def possible_pairing
     @possible_pairing ||= begin
-      scope = self.class.unpaired.where(supported: desired_supported)
+      scope = self.class.unpaired.where(supported: desired_supported).where.not(id: self.id)
       by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
       by_zip.first || scope.first
     end
