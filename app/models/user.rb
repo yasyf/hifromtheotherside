@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
   enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
-  scope :paired, -> { joins('INNER JOIN pairings ON pairings.user_1_id = users.id OR pairings.user_2_id = users.id').distinct }
-  scope :unpaired, -> { joins('INNER JOIN pairings ON pairings.user_1_id != users.id AND pairings.user_2_id != users.id').distinct }
+  scope :paired, -> { joins('INNER JOIN pairings ON pairings.user_1_id = users.id OR pairings.user_2_id = users.id').group('users.id') }
+  scope :unpaired, -> { joins('INNER JOIN pairings ON pairings.user_1_id != users.id AND pairings.user_2_id != users.id').group('users.id') }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
 
   def self.from_omniauth(auth)
