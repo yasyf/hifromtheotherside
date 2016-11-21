@@ -21,7 +21,8 @@ class AdminController < ApplicationController
 
   def pair
     user = User.find(params[:id])
-    Pairing.pair!(user, user.possible_pairing)
+    pairing = Pairing.pair!(user, user.possible_pairing)
+    flash[:notice] = "Emails to #{pairing.user_1.first_name} and #{pairing.user_2.first_name} sent!"
     render js: '$("[data-dismiss=modal]").trigger({ type: "click" }); location.reload();'
   end
 
