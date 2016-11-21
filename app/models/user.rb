@@ -11,7 +11,18 @@ class User < ActiveRecord::Base
   validates :background, presence: true, if: :completed?
   validates :subscribe, inclusion: [true, false]
   validates :paired, inclusion: [true, false]
-  validates :zip, numericality: { only_integer: true, allow_nil: true }
+  validates :zip, numericality: { only_integer: true, allow_blank: true }
+
+  KEY_WORDS = %w(
+    chef diplomat fireman teacher veteran vet
+    engineer pilot artist dancer entrepreneur
+    psychologist doctor science physics biology
+    chemistry nonprofit computer musician writer
+    business author spy government singer geek
+    startup astronaut lawyer policeman ballet
+    christian muslim jew
+    york francisco boston
+  )
 
   SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
@@ -83,10 +94,36 @@ class User < ActiveRecord::Base
 
   private
 
+  def key_words
+    KEY_WORDS.select { |word| background.downcase.include?(word) }.shuffle
+  end
+
+  def order_by_zip(scope)
+    scope.order("@(COALESCE(NULLIF(zip, ''), '1000000')::int - #{zip.to_i})")
+  end
+
   def find_pairing
-    scope = self.class.unpaired.where(supported: desired_supported).where.not(id: self.id)
-    by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
-    by_zip.first || scope.first
+    scope = self.class
+      .unpaired
+      .where(supported: desired_supported)
+      .where.not(id: self.id)
+
+    # Combinations of keywords
+    words = key_words
+    while words.present?
+      search = scope.advanced_search(background: words.join('&'))
+      return order_by_zip(search).first if search.present?
+      words.pop
+    end
+
+    # Each individual keyword
+    key_words.each do |word|
+      search = scope.basic_search(background: word)
+      return order_by_zip(search).first if search.present?
+    end
+
+    # Fallback to closest
+    order_by_zip(scope).first
   end
 
   def pairings
