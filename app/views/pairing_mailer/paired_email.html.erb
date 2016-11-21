@@ -1,0 +1,22 @@
+<p>Hey <%= @user_1.first_name %> and <%= @user_2.first_name %>,</p>
+<p>
+  Thanks for taking the time to have a conversation. I'll leave it up to you two to find a time for
+  <% if @locations[0][:city] == @locations[1][:city] %>
+    a video chat, or even an in-person conversation – both of you are in <%= @locations[0][:city] %>.
+  <% else %>
+    a video chat or phone call. I highly recommend the video chat!
+    <% if @locations[0][:time_zone] && @locations[1][:time_zone] %>
+      <% if @locations[0][:time_zone] == @locations[1][:time_zone] %>
+        You're both in the <%= @locations[0][:time_zone_nice] %> time zone, which is awesome!
+      <% else %>
+        Watch out, one of you is in the <%= @locations[0][:time_zone_nice] %> time zone, and the other is in <%= @locations[1][:time_zone_nice] %>.
+      <% end %>
+    <% end %>
+  <% end %>
+</p>
+<p>
+  You can find conversation guide I put together to help get you started <a href="https://www.hifromtheotherside.com/guide">here</a>.
+</p>
+<p>I'll follow up in about a week to see how it went!</p>
+<p>Thanks,</p>
+<p>Henry</p>

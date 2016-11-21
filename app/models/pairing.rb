@@ -13,6 +13,7 @@ class Pairing < ApplicationRecord
     pairing = create! user_1_id: user_1_id, user_2_id: user_2_id
     user_1.update! paired: true
     user_2.update! paired: true
+    PairingMailer.paired_email(pairing).deliver_now
     pairing
   end
 
