@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :background, presence: true, if: :completed?
   validates :subscribe, inclusion: [true, false]
   validates :paired, inclusion: [true, false]
-  validates :zip, numericality: { only_integer: true }, if: :completed?
+  validates :zip, numericality: { only_integer: true, allow_nil: true }
 
   SUPPORTED_CANDIDATES = {
     trump: "Donald Trump",
