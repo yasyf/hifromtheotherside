@@ -15,7 +15,7 @@ class AdminController < ApplicationController
       scope = scope.unpaired
       @title = 'Unpaired Users'
     end
-    @pages = scope.count / USER_LIMIT
+    @pages = scope.count.keys.size / USER_LIMIT
     @users = scope.limit(USER_LIMIT).offset(page * USER_LIMIT)
   end
 
