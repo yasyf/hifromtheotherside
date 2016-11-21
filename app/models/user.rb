@@ -75,13 +75,19 @@ class User < ActiveRecord::Base
 
   def possible_pairing
     @possible_pairing ||= begin
-      scope = self.class.unpaired.where(supported: desired_supported).where.not(id: self.id)
-      by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
-      by_zip.first || scope.first
+      other = Rails.cache.fetch("#{cache_key}/pairing") { find_pairing }
+      other = Rails.cache.fetch("#{cache_key}/pairing", force: true) { find_pairing } if other&.paired?
+      other
     end
   end
 
   private
+
+  def find_pairing
+    scope = self.class.unpaired.where(supported: desired_supported).where.not(id: self.id)
+    by_zip = scope.where.not(zip: '').order("@(zip::int - #{zip.to_i})")
+    by_zip.first || scope.first
+  end
 
   def pairings
     @pairings ||= Pairing.where(user_1: self).or(Pairing.where(user_2: self))

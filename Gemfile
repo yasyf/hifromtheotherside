@@ -37,6 +37,7 @@ gem "twitter-bootstrap-rails"
 gem 'omniauth-facebook'
 gem "koala", "~> 2.2"
 gem 'raygun4ruby'
+gem 'textacular', '~> 4.0'
 
 group :production do
   gem 'puma'
