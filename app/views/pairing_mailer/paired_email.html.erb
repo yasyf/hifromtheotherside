@@ -1,6 +1,7 @@
 <p>Hey <%= @user_1.first_name %> and <%= @user_2.first_name %>,</p>
 <p>
-  Thanks for taking the time to have a conversation. I'll leave it up to you two to find a time for
+  Thanks for taking the time to have a conversation. One of you voted for <%= @user_1.supported_nice %>, and the other for <%= @user_2.supported_nice %>.
+  I'll leave it up to you two to find a time for
   <% if @locations[0][:city] == @locations[1][:city] %>
     a video chat, or even an in-person conversation – both of you are in <%= @locations[0][:city] %>.
   <% else %>

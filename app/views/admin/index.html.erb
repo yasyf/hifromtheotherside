@@ -59,7 +59,7 @@
         </div>
         <div class="modal-body">
           <p>
-            A <%= user.supported.titleize %> supporter who wants to talk to someone who supported <%= user.desired.titleize %>.
+            A <%= user.supported_nice %> supporter who wants to talk to someone who supported <%= user.desired.titleize %>.
             <% if user.zip.present? %>
               He or she lives at zip code <%= user.zip %>.
             <% end %>
@@ -68,11 +68,11 @@
           <p><%= user.background %></p>
           <% if user.pairing.present? %>
             <h4>Pairing</h4>
-            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported.titleize %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.email %>.</p>
+            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported_nice %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.email %>.</p>
             <p><%= user.pairing.background %></p>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
-            <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported.titleize %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>.</p>
+            <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported_nice %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>.</p>
             <p><%= user.possible_pairing.background %></p>
           <% end %>
         </div>

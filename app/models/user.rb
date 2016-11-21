@@ -93,6 +93,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def supported_nice
+    SUPPORTED_CANDIDATES[supported]
+  end
+
   private
 
   def key_words
