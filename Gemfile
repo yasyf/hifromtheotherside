@@ -36,6 +36,7 @@ gem 'devise'
 gem "twitter-bootstrap-rails"
 gem 'omniauth-facebook'
 gem "koala", "~> 2.2"
+gem 'raygun4ruby'
 
 group :production do
   gem 'puma'
