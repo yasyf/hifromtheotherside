@@ -36,6 +36,7 @@ gem 'devise'
 gem "twitter-bootstrap-rails"
 gem 'omniauth-facebook'
 gem "koala", "~> 2.2"
+gem 'airbrake'
 
 group :production do
   gem 'puma'
