@@ -1,23 +1,9 @@
-## Setup Instructions
+# Hi From The Other Side
 
-For the uninitiated:
+## What is this?
 
-Install `rvm` and the correct version of ruby, 2.3.1:
+After the election, many of us talked about getting out of our echo chambers to talk to someone who supported another candidate. Not to convince, but to understand. This is our solution to that problem. Sign up to get matched with someone who voted for another candidate, and start having a real dialogue.
 
-```bash
-\curl -sSL https://get.rvm.io | bash -s stable --ruby
-rvm install 2.3.1
-rvm use 2.3.1
-```
+## Contributing!
 
-Install the ruby bundler:
-
-```bash
-gem install bundler
-```
-
-Then use the bundler to install packages in the Gemfile:
-
-```bash
-bundle install
-```
+`bundle install` and PR away!
