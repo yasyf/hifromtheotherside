@@ -66,10 +66,12 @@
           </p>
           <h4>Background</h4>
           <p><%= user.background %></p>
-          <% if user.pairing.present? %>
-            <h4>Pairing</h4>
-            <p><%= user.first_name %> is paired with <%= user.pairing.name %>, a <%= user.pairing.supported_nice %> supporter<% if user.pairing.zip.present? %> from <%= user.pairing.zip %><% end %>. Their email is <%= user.pairing.email %>.</p>
-            <p><%= user.pairing.background %></p>
+          <% if user.paired_users.present? %>
+            <% user.paired_users.each do |paired_user| %>
+              <h4>Pairing (<%= paired_user.first_name %>)</h4>
+              <p><%= user.first_name %> is paired with <%= paired_user.name %>, a <%= paired_user.supported_nice %> supporter<% if paired_user.zip.present? %> from <%= paired_user.zip %><% end %>. Their email is <%= paired_user.email %>.</p>
+              <p><%= paired_user.background %></p>
+            <% end %>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
             <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported_nice %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>.</p>
@@ -78,8 +80,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <% if user.pairing.present? %>
-            <a class="btn btn-primary" href="mailto:<%= user.email %>,<%= user.pairing.email %>?subject=<%=h "Hi From The Other Side" %>">Email</a>
+          <% if user.paired_users.present? %>
+            <% user.paired_users.each do |paired_user| %>
+              <a class="btn btn-primary" href="mailto:<%= user.email %>,<%= paired_user.email %>?subject=<%=h "Hi From The Other Side" %>">Email (<%= paired_user.first_name %>)</a>
+            <% end %>
           <% elsif user.possible_pairing.present? %>
             <a class="btn btn-primary" href="<%= pair_admin_path(user.id) %>" data-method="post" data-remote="true">Pair</a>
           <% end %>

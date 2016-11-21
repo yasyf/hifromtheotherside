@@ -79,10 +79,8 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def pairing
-    return nil unless pairings.present?
-    pair = pairings.first
-    pair.user_1 == self ? pair.user_2 : pair.user_1
+  def paired_users
+    pairings.map { |pair| pair.user_1 == self ? pair.user_2 : pair.user_1 }
   end
 
   def possible_pairing
