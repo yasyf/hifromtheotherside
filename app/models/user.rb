@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
     chemistry nonprofit computer musician writer
     business author spy government singer geek
     startup astronaut lawyer policeman ballet
+    magician actor actress president surgeon
     christian muslim jew
     york francisco boston
   )
