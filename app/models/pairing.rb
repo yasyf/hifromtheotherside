@@ -4,6 +4,8 @@ class Pairing < ApplicationRecord
 
   validates :user_2, uniqueness: { scope: :user_1 }
 
+  before_destroy :unpair!
+
   def self.pair!(user_1, user_2)
     return unless user_1 != user_2
     user_1_id = [user_1.id, user_2.id].min
@@ -12,5 +14,12 @@ class Pairing < ApplicationRecord
     user_1.update! paired: true
     user_2.update! paired: true
     pairing
+  end
+
+  private
+
+  def unpair!
+    user_1.update! paired: false
+    user_2.update! paired: false
   end
 end
