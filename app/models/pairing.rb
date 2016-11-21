@@ -20,7 +20,7 @@ class Pairing < ApplicationRecord
   private
 
   def unpair!
-    user_1.update! paired: false
-    user_2.update! paired: false
+    user_1.update! paired: false if user_1.present?
+    user_2.update! paired: false if user_2.present?
   end
 end
