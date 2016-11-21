@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121030008) do
+ActiveRecord::Schema.define(version: 20161121100512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,28 +27,27 @@ ActiveRecord::Schema.define(version: 20161121030008) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "email",                  default: "",   null: false
+    t.string   "encrypted_password",     default: "",   null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",          default: 0,    null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    t.string   "first_name",             default: "",    null: false
-    t.string   "last_name",              default: "",    null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "first_name",             default: "",   null: false
+    t.string   "last_name",              default: "",   null: false
     t.string   "zip"
     t.integer  "supported"
     t.integer  "desired"
     t.text     "background"
     t.string   "provider"
     t.string   "uid"
-    t.boolean  "subscribe",              default: true,  null: false
-    t.boolean  "paired",                 default: false, null: false
+    t.boolean  "subscribe",              default: true, null: false
     t.index "to_tsvector('english'::regconfig, background)", name: "users_to_tsvector_idx", using: :gin
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree

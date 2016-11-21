@@ -10,7 +10,6 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true, if: :completed?
   validates :background, presence: true, if: :completed?
   validates :subscribe, inclusion: [true, false]
-  validates :paired, inclusion: [true, false]
   validates :zip, numericality: { only_integer: true, allow_blank: true }
 
   KEY_WORDS = %w(
@@ -43,8 +42,8 @@ class User < ActiveRecord::Base
   enum supported: SUPPORTED_CANDIDATES.keys, _prefix: true
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
-  scope :paired, -> { where(paired: true) }
-  scope :unpaired, -> { where(paired: false) }
+  scope :paired, -> { joins('INNER JOIN pairings ON pairings.user_1_id = users.id OR pairings.user_2_id = users.id').distinct }
+  scope :unpaired, -> { joins('INNER JOIN pairings ON pairings.user_1_id != users.id AND pairings.user_2_id != users.id').distinct }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
 
   def self.from_omniauth(auth)
@@ -93,6 +92,10 @@ class User < ActiveRecord::Base
 
   def supported_nice
     SUPPORTED_CANDIDATES[supported]
+  end
+
+  def paired?
+    pairings.present?
   end
 
   private
