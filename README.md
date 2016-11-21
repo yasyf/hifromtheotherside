@@ -7,3 +7,5 @@ After the election, many of us talked about getting out of our echo chambers to 
 ## Contributing!
 
 `bundle install` and PR away!
+
+Facebook auth is disabled locally, so you can directly visit the paths you want to view/work with without logging in. The creation form is at `/responses/new` and the admin dashboard is at `/admin`.
