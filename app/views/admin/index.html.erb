@@ -1,7 +1,19 @@
 <% content_for(:title) { @title } %>
 
-<div style='padding-bottom: 20px;'>
-  <p><h1><%= @title %></h1></p>
+<div style='padding-bottom: 20px;' class='row'>
+  <div class="col-lg-4">
+    <p><h1><%= @title %></h1></p>
+  </div>
+  <div class="col-lg-offset-4 col-lg-4 text-right">
+    <form>
+      <div class="input-group" style="padding-top: 25px;">
+        <input type="text" class="form-control" placeholder="Name or Email..." name="q" value="<%= params[:q] %>">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Search</button>
+        </span>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div>

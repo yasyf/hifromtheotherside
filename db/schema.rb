@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121100512) do
+ActiveRecord::Schema.define(version: 20161122045314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "pairings", force: :cascade do |t|
     t.integer  "user_1_id",  null: false
