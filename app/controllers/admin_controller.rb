@@ -11,12 +11,14 @@ class AdminController < ApplicationController
     scope = scope.fuzzy_search(params[:q]) if params[:q].present?
     if paired?
       scope = scope.paired
+      count = scope.count
       @title = 'Paired Users'
     else
       scope = scope.unpaired
+      count = scope.count('*')
       @title = 'Unpaired Users'
     end
-    @pages = scope.count('*') / USER_LIMIT
+    @pages = count / USER_LIMIT
     @users = scope.limit(USER_LIMIT).offset(page * USER_LIMIT)
   end
 
