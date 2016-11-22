@@ -9,7 +9,11 @@ class Pairing < ApplicationRecord
     user_1_id = [user_1.id, user_2.id].min
     user_2_id = [user_1.id, user_2.id].max
     pairing = create! user_1_id: user_1_id, user_2_id: user_2_id
-    PairingMailer.paired_email(pairing).deliver_now
+    pairing.email!
     pairing
+  end
+
+  def email!
+    PairingMailer.paired_email(self).deliver_now
   end
 end
