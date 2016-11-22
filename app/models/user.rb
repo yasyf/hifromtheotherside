@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
@@ -67,8 +69,29 @@ class User < ActiveRecord::Base
     scope.select {|u| u.zip.to_i >= start && u.zip.to_i <= finish }
   end
 
+  def self.import(csv_url, header_map)
+    CSV.foreach(open(csv_url).path, headers: true) do |row|
+      attrs = row.map { |k,v| [header_map[k], v] if header_map.include?(k) }.compact.to_h
+      attrs[:supported] = SUPPORTED_CANDIDATES.invert[attrs[:supported]] || :other
+      attrs[:desired] = DESIRED_CANDIDATES.invert[attrs[:desired]] || :anyone
+      if attrs[:name].present?
+        name = attrs.delete(:name).split(' ')
+        attrs[:first_name], attrs[:last_name] = name.shift, name.join(' ')
+      end
+      user = where(email: attrs[:email]).first_or_initialize
+      user.assign_attributes attrs
+      user.password = Devise.friendly_token[0,20]
+      user.save!
+    end
+  end
+
   def self.export(scope=where(subscribe: true), options={})
     scope.as_json({methods: [:name], only: [:email, :desired, :supported]}.reverse_merge(options))
+  end
+
+  def self.state_counts(scope=where.not(zip: ""))
+    states = where.not(zip: "").map { |u| ZipCodes.identify(u.zip) }.compact.map { |h| h[:state_code] }
+    states.each_with_object(Hash.new(0)) { |state, counts| counts[state] += 1 }
   end
 
   def completed?
