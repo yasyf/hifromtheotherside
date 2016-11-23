@@ -42,6 +42,10 @@ class Pairing < ApplicationRecord
   def process_event!(params)
     return unless self.class.statuses.include?(params[:event])
     status = [self.class.statuses[self.status], self.class.statuses[params[:event]]].max
-    update! status: status, geolocation: params[:geolocation], ip: params[:ip], info: params['client-info']
+    update! status: status
+
+    user = [user_1, user_2].find { |u| u.email == params[:recipient] }
+    return unless user.present?
+    user.update! geolocation: params[:geolocation], ip: params[:ip], info: params['client-info']
   end
 end

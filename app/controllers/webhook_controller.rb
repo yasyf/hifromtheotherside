@@ -4,7 +4,7 @@ class WebhookController < ApplicationController
   before_action :validate!
 
   def hook
-    pairing&.process_event!(params.slice(:geolocation, :event, :ip, 'client-info'))
+    pairing&.process_event!(params.slice(:geolocation, :event, :ip, :recipient, 'client-info'))
     head :ok
   end
 
