@@ -5,6 +5,7 @@ class WebhookController < ApplicationController
 
   def hook
     pairing&.process_event!(params.slice(:geolocation, :event, :ip, 'client-info'))
+    head :ok
   end
 
   private
@@ -17,6 +18,6 @@ class WebhookController < ApplicationController
     digest = OpenSSL::Digest::SHA256.new
     data = params.slice(:timestamp, :token).values.join
     expected = OpenSSL::HMAC.hexdigest(digest, ENV['MAILGUN_API_KEY'], data)
-    head(:forbidden) unless signature == expected
+    head(:forbidden) unless params[:signature] == expected
   end
 end

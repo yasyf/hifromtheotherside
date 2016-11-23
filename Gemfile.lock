@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/jorgemanrubia/mailgun_rails.git
+  remote: https://github.com/jorgemanrubia/mailgun_rails.git
   revision: ebcaaa3d098cc604b54c86dca1dbae4b3350b80d
   tag: v0.9.0
   specs:
