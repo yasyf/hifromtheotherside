@@ -38,8 +38,9 @@ gem 'omniauth-facebook'
 gem "koala", "~> 2.2"
 gem 'raygun4ruby'
 gem 'textacular', '~> 4.0'
-gem 'mailgun_rails'
+gem 'mailgun_rails', git: 'git://github.com/jorgemanrubia/mailgun_rails.git', tag: 'v0.9.0'
 gem 'zip-codes'
+gem 'mailgun-ruby', '~> 1.1.2'
 
 group :production do
   gem 'puma'

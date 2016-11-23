@@ -122,6 +122,10 @@ class User < ActiveRecord::Base
     pairings.present?
   end
 
+  def pairings
+    @pairings ||= Pairing.where(user_1: self).or(Pairing.where(user_2: self))
+  end
+
   private
 
   def key_words
@@ -154,10 +158,6 @@ class User < ActiveRecord::Base
 
     # Fallback to closest
     order_by_zip(scope).first
-  end
-
-  def pairings
-    @pairings ||= Pairing.where(user_1: self).or(Pairing.where(user_2: self))
   end
 
   def desired_supported

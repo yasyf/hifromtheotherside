@@ -10,17 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122045314) do
+ActiveRecord::Schema.define(version: 20161123094910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
 
   create_table "pairings", force: :cascade do |t|
-    t.integer  "user_1_id",  null: false
-    t.integer  "user_2_id",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_1_id",               null: false
+    t.integer  "user_2_id",               null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "message_id"
+    t.json     "geolocation"
+    t.string   "ip"
+    t.json     "info"
+    t.integer  "status",      default: 0, null: false
     t.index ["user_1_id", "user_2_id"], name: "index_pairings_on_user_1_id_and_user_2_id", unique: true, using: :btree
     t.index ["user_1_id"], name: "index_pairings_on_user_1_id", using: :btree
     t.index ["user_2_id", "user_1_id"], name: "index_pairings_on_user_2_id_and_user_1_id", unique: true, using: :btree

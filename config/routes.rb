@@ -8,4 +8,6 @@ Rails.application.routes.draw do
       post 'pair'
     end
   end
+
+  post 'hook', controller: 'webhook'
 end
