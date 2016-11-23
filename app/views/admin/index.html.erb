@@ -78,15 +78,16 @@
               He or she lives at zip code <%= user.zip %>.
             <% end %>
           </p>
+          <h4>Background</h4>
+          <p><%= user.background %></p>
           <% %w(info geolocation ip).each do |attr| %>
             <% if user.send(attr).present? %>
               <h4><%= attr.titleize %></h4>
               <p><pre><%= user.send(attr).to_json %></pre></p>
             <% end %>
           <% end %>
-          <h4>Background</h4>
-          <p><%= user.background %></p>
           <% if user.paired_users.present? %>
+            <hr>
             <% user.paired_users.each_with_index do |paired_user, i| %>
               <h4>Pairing (<%= paired_user.first_name %>)</h4>
               <p><%= user.first_name %> is paired with <%= paired_user.name %>, a <%= paired_user.supported_nice %> supporter<% if paired_user.zip.present? %> from <%= paired_user.zip %><% end %>. Their email is <%= paired_user.email %>.</p>
