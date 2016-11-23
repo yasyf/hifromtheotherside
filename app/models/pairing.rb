@@ -17,7 +17,11 @@ class Pairing < ApplicationRecord
   end
 
   def self.from_event(params)
-    by_message_id = where(message_id: params[:message][:headers]['message-id'])
+    message_id = params['Message-Id'] ||
+                params['message-id'] ||
+                (params['message-headers'] && params['message-headers']['Message-Id']) ||
+                (params[:message] && params[:message][:headers] && params[:message][:headers]['message-id'])
+    by_message_id = where(message_id: message_id)
     by_recipient = User.where(email: params[:recipient])
     by_message_id.first || by_recipient.first&.pairings&.last
   end
