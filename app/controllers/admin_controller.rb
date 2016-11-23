@@ -7,7 +7,7 @@ class AdminController < ApplicationController
       return
     end
 
-    scope = User.order(:created_at).completed
+    scope = User.completed
     scope = scope.fuzzy_search(params[:q]) if params[:q].present?
     if paired?
       scope = scope.paired
@@ -19,7 +19,7 @@ class AdminController < ApplicationController
       @title = 'Unpaired Users'
     end
     @pages = count / USER_LIMIT
-    @users = scope.limit(USER_LIMIT).offset(page * USER_LIMIT)
+    @users = scope.order(:created_at).limit(USER_LIMIT).offset(page * USER_LIMIT)
   end
 
   def pair
