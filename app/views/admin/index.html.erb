@@ -79,7 +79,7 @@
           <% %w(info geolocation ip).each do |attr| %>
             <% if user.send(attr).present? %>
               <h4><%= attr.titleize %></h4>
-              <p><code><%= user.send(attr) %></code></p>
+              <p><pre><%= user.send(attr).to_json %></pre></p>
             <% end %>
           <% end %>
           <h4>Background</h4>
@@ -89,7 +89,7 @@
               <h4>Pairing (<%= paired_user.first_name %>)</h4>
               <p><%= user.first_name %> is paired with <%= paired_user.name %>, a <%= paired_user.supported_nice %> supporter<% if paired_user.zip.present? %> from <%= paired_user.zip %><% end %>. Their email is <%= paired_user.email %>.</p>
               <p><%= paired_user.background %></p>
-              <p>The status of this email is <b><%= user.pairings[i].status %></p>
+              <p>The status of this email is <b><%= user.pairings[i].status %></b>.</p>
             <% end %>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
