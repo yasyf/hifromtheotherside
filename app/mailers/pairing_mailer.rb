@@ -6,7 +6,7 @@ class PairingMailer < ApplicationMailer
     @user_2 = pairing.user_2
 
     users = [@user_1, @user_2]
-    @locations = users.map { |u| u.zip.present? ? ZipCodes.identify(u.zip) : {} }
+    @locations = users.map { |u| u.zip.present? ? (ZipCodes.identify(u.zip) || {}) : {} }
     @locations.each do |h|
       h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }.first if h[:time_zone].present?
     end
