@@ -9,17 +9,13 @@ class AdminController < ApplicationController
 
     scope = User.completed
     if paired?
-      scope = if params[:q].present?
-        scope.paired_with_dupes.fuzzy_search(params[:q])
-      else
-        scope.paired
-      end
+      scope = scope.paired
       @title = 'Paired Users'
     else
       scope = scope.unpaired
-      scope = scope.fuzzy_search(params[:q]) if params[:q].present?
       @title = 'Unpaired Users'
     end
+    scope = scope.fuzzy_search(params[:q]) if params[:q].present?
     @pages = scope.count('*') / USER_LIMIT
     @users = scope.order(:created_at).limit(USER_LIMIT).offset(page * USER_LIMIT)
   end
