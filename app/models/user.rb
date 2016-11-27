@@ -45,7 +45,8 @@ class User < ActiveRecord::Base
   enum desired: DESIRED_CANDIDATES.keys, _prefix: true
 
   scope :with_pairings, -> { joins('LEFT OUTER JOIN pairings ON pairings.user_1_id = users.id OR pairings.user_2_id = users.id') }
-  scope :paired, -> { with_pairings.where('pairings.id IS NOT NULL').order(:id).select('DISTINCT ON (users.id) users.*') }
+  scope :paired_with_dupes, -> { with_pairings.where('pairings.id IS NOT NULL') }
+  scope :paired, -> { paired_with_dupes.order(:id).select('DISTINCT ON (users.id) users.*') }
   scope :unpaired, -> { with_pairings.where('pairings.id IS NULL') }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
 

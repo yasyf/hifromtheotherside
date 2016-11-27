@@ -8,6 +8,7 @@
     <form>
       <div class="input-group" style="padding-top: 25px;">
         <input type="text" class="form-control" placeholder="Name or Email..." name="q" value="<%= params[:q] %>">
+        <input type="hidden" name="paired" value="<%= params[:paired] %>">
         <span class="input-group-btn">
           <button class="btn btn-default" type="submit">Search</button>
         </span>
