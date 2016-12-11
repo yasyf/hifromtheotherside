@@ -9,7 +9,8 @@
       <input type="text" class="form-control" placeholder="Name or email" name="name_email" value="<%= params[:name_email] %>">
       <input type="text" class="form-control" placeholder="ZIP code" name="zip" value="<%= params[:zip] %>" style="width:6em" maxlength="5" >
       <%= select_tag(:supported, '<option value="">Any</option>'.html_safe +
-                                 options_for_select(Hash[User.supporteds.collect {|k, v| [k.capitalize, v] }], params[:supported])) %>
+                     options_for_select(Hash[User.supporteds.collect {|k, v| [k.capitalize, v] }], params[:supported]),
+                     class: "form-control") %>
       <input type="hidden" name="paired" value="<%= params[:paired] %>">
       <button class="btn btn-default" type="submit">Search</button>
     </form>
