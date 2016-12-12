@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
   scope :paired, -> { with_pairings.where('pairings.id IS NOT NULL').order(:id).select('DISTINCT ON (users.id) users.*') }
   scope :unpaired, -> { with_pairings.where('pairings.id IS NULL') }
   scope :completed, -> { where.not(desired: nil, supported: nil) }
+  scope :zip_starts_with, ->(zip_prefix) { where("users.zip LIKE '#{zip_prefix}%'") }
 
   def self.from_omniauth(auth)
     graph = Koala::Facebook::API.new(auth.credentials.token)

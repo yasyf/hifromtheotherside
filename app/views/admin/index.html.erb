@@ -1,18 +1,21 @@
 <% content_for(:title) { @title } %>
 
 <div style='padding-bottom: 20px;' class='row'>
-  <div class="col-lg-4">
+  <div class="col-md-4">
     <p><h1><%= @title %></h1></p>
   </div>
-  <div class="col-lg-offset-4 col-lg-4 text-right">
-    <form>
-      <div class="input-group" style="padding-top: 25px;">
-        <input type="text" class="form-control" placeholder="Name or Email..." name="q" value="<%= params[:q] %>">
-        <input type="hidden" name="paired" value="<%= params[:paired] %>">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">Search</button>
-        </span>
+  <div class="col-md-8 text-right">
+    <form class="form-inline" style="padding-top: 25px;">
+      <input type="text" class="form-control" placeholder="Name or email" name="name_email" value="<%= params[:name_email] %>">
+      <input type="text" class="form-control" placeholder="ZIP code" name="zip" value="<%= params[:zip] %>" style="width:6em" maxlength="5" >
+      <div class="input-group">
+        <span class="input-group-addon">Supported</span>
+        <%= select_tag(:supported, '<option value="">Any</option>'.html_safe +
+                       options_for_select(Hash[User.supporteds.collect {|k, v| [k.capitalize, v] }], params[:supported]),
+                       class: "form-control") %>
       </div>
+      <input type="hidden" name="paired" value="<%= params[:paired] %>">
+      <button class="btn btn-default" type="submit">Search</button>
     </form>
   </div>
 </div>
