@@ -20,16 +20,11 @@ class AdminController < ApplicationController
     zip = params[:zip]
     supported = params[:supported]
 
-    if name_email.present?
-         scope = scope.fuzzy_search(name_email) # Searches all string fields; presumably won't match ZIP
-    end
-    if zip.present?
-      # The first 3 digits of a ZIP code indicate a postal delivery region.
-      scope = scope.zip_starts_with(zip[0..2])
-    end
-    if supported.present?
-      scope = scope.where(supported: supported.to_i)
-    end
+    # Searches all string fields; presumably won't match ZIP.
+    scope = scope.fuzzy_search(name_email) if name_email.present?
+    # The first 3 digits of a ZIP code indicate a postal delivery region.
+    scope = scope.zip_starts_with(zip[0..2]) if zip.present?
+    scope = scope.where(supported: supported.to_i) if supported.present?
 
     @pages = scope.count('*') / USER_LIMIT
     @users = scope.order(:created_at).limit(USER_LIMIT).offset(page * USER_LIMIT)
