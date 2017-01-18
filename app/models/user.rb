@@ -143,6 +143,15 @@ class User < ActiveRecord::Base
       .where(supported: desired_supported)
       .where.not(id: self.id)
 
+    # If we're a third-party supporter and willing to talk to anyone, prefer
+    # pairing with a Clinton supporter willing to talk to anyone.
+    if [:stein, :johnson, :other].include? supported.to_sym and desired.to_sym == :anyone
+      clinton_supporter_scope = scope.where(supported: 'clinton', desired: 'anyone')
+      if clinton_supporter_scope.exists? # There is at least one relevant Clinton supporter
+        scope = clinton_supporter_scope
+      end
+    end
+
     # Combinations of keywords
     words = key_words
     while words.present?
