@@ -127,6 +127,10 @@ class User < ActiveRecord::Base
     @pairings ||= Pairing.where(user_1: self).or(Pairing.where(user_2: self))
   end
 
+  def third_party?
+    !supported.to_sym.in? [:trump, :clinton]
+  end
+
   private
 
   def key_words
@@ -140,17 +144,9 @@ class User < ActiveRecord::Base
   def find_pairing
     scope = self.class
       .unpaired
-      .where(supported: desired_supported)
+      .where(supported: desired_to_supported)
+      .where(desired: supported_to_desired)
       .where.not(id: self.id)
-
-    # If we're a third-party supporter and willing to talk to anyone, prefer
-    # pairing with a Clinton supporter willing to talk to anyone.
-    if [:stein, :johnson, :other].include? supported.to_sym and desired.to_sym == :anyone
-      clinton_supporter_scope = scope.where(supported: 'clinton', desired: 'anyone')
-      if clinton_supporter_scope.exists? # There is at least one relevant Clinton supporter
-        scope = clinton_supporter_scope
-      end
-    end
 
     # Combinations of keywords
     words = key_words
@@ -170,7 +166,7 @@ class User < ActiveRecord::Base
     order_by_zip(scope).first
   end
 
-  def desired_supported
+  def desired_to_supported
     case desired.to_sym
     when :trump
       :trump
@@ -179,7 +175,21 @@ class User < ActiveRecord::Base
     when :independent
       [:stein, :johnson]
     when :anyone
-      SUPPORTED_CANDIDATES.keys - [supported]
+      # If willing to talk to anyone, pair with Clinton (#37)
+      :clinton
     end
+  end
+
+  def supported_to_desired
+    desired =
+      case supported.to_sym
+      when :trump
+        :trump
+      when :clinton
+        :clinton
+      when :stein, :johnson
+        :independent
+      end
+    [desired, :anyone].compact
   end
 end
