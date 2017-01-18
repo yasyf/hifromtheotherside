@@ -16,15 +16,11 @@ class AdminController < ApplicationController
       @title = 'Unpaired Users'
     end
 
-    name_email = params[:name_email]
-    zip = params[:zip]
-    supported = params[:supported]
-
     # Searches all string fields; presumably won't match ZIP.
-    scope = scope.fuzzy_search(name_email) if name_email.present?
+    scope = scope.fuzzy_search(params[:name_email]) if params[:name_email].present?
     # The first 3 digits of a ZIP code indicate a postal delivery region.
-    scope = scope.zip_starts_with(zip[0..2]) if zip.present?
-    scope = scope.where(supported: supported.to_i) if supported.present?
+    scope = scope.zip_starts_with(params[:zip][0..2]) if params[:zip].present?
+    scope = scope.where(supported: params[:supported].to_i) if params[:supported].present?
 
     @pages = scope.count('*') / USER_LIMIT
     @users = scope.order(:created_at).limit(USER_LIMIT).offset(page * USER_LIMIT)
