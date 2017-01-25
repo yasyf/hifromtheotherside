@@ -33,6 +33,17 @@ class AdminController < ApplicationController
     render js: '$("[data-dismiss=modal]").trigger({ type: "click" }); location.reload();'
   end
 
+  def destroy
+    user = User.find(params[:id])
+    if user.pairings.present?
+      flash[:alert] = "Cannot remove user with active pairings!"
+    else
+      user.destroy!
+      flash[:notice] = "#{user.name} has been removed!"
+    end
+    render js: 'location.reload();'
+  end
+
   private
 
   def page

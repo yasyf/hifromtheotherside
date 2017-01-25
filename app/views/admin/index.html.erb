@@ -30,7 +30,11 @@
         <td>Zip</td>
         <td>Supported</td>
         <td>Desired</td>
-        <% if @paired %><td>Status</td><% end %>
+        <% if @paired %>
+          <td>Status</td>
+        <% else %>
+          <td>Remove</td>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -42,7 +46,15 @@
           <td><%= user.zip %></td>
           <td><%= user.supported.titleize %></td>
           <td><%= user.desired.titleize %></td>
-          <% if @paired %><td><%= user.pairings.last.status %></td><% end %>
+          <% if @paired %>
+            <td><%= user.pairings.last.status %></td>
+          <% else %>
+            <td class="text-center">
+              <a class="btn btn-danger btn-xs" data-method="delete" href="<%= admin_path(user) %>" data-remote="true">
+                &#10007;
+              </a>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
