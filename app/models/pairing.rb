@@ -39,7 +39,7 @@ class Pairing < ApplicationRecord
   def email!
     locations = user_locations
     PairingMailer.paired_email(self, locations).deliver_now
-    if locations[0][:city] == locations[1][:city]
+    if locations[0][:city] == locations[1][:city] && starbucks_gift_card.present?
       PairingMailer.user_1_starbucks_email(self).deliver_now
       PairingMailer.user_2_starbucks_email(self).deliver_now
     end
