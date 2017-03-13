@@ -1,4 +1,24 @@
 <% content_for(:title) { @title } %>
+<div style='padding-bottom: 20px;' class='row'>
+  <div class="col-md-2">
+    <h3>Stats</h3>
+  </div>
+  <div class="col-md-2">
+    <h3>Paired: <%= User.completed.paired.count('*') %></h3>
+  </div>
+  <div class="col-md-2">
+    <h3>Unpaired: <%= User.completed.unpaired.count('*') %></h3>
+  </div>
+  <div class="col-md-2">
+    <h3>Opens: <%= Pairing.where(status: [:opened, :clicked]).count %></h3>
+  </div>
+  <div class="col-md-2">
+    <h3>Clicks: <%= Pairing.where(status: :clicked).count %></h3>
+  </div>
+  <div class="col-md-2">
+    <h3>SB Codes: <%= GiftCard.where(store: "Starbucks", pairing: nil).count %></h3>
+  </div>
+</div>
 
 <div style='padding-bottom: 20px;' class='row'>
   <div class="col-md-4">
