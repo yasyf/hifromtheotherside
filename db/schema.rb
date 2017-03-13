@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123094910) do
+ActiveRecord::Schema.define(version: 20170312233409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
+
+  create_table "gift_cards", force: :cascade do |t|
+    t.string   "store",      null: false
+    t.string   "url",        null: false
+    t.string   "challenge",  null: false
+    t.bigint   "number",     null: false
+    t.integer  "amount",     null: false
+    t.integer  "pairing_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pairing_id"], name: "index_gift_cards_on_pairing_id", using: :btree
+  end
 
   create_table "pairings", force: :cascade do |t|
     t.integer  "user_1_id",              null: false

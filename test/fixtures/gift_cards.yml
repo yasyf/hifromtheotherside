@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  store: MyString
+  url: MyString
+  challenge: MyString
+  number: 
+  amount: 
+
+two:
+  store: MyString
+  url: MyString
+  challenge: MyString
+  number: 
+  amount: 

@@ -1,0 +1,8 @@
+<p>Hey <%= @user.first_name %>,</p>
+<p>
+  Here’s a link to your unique Starbucks eGift page. Your match <%= @other.first_name %> has the Challenge Key that will unlock the eGift card. When you’re at Starbucks, put your pieces together to get the $10 Starbucks eGift card!
+</p>
+<p>
+  <a href="<%= @url %>">&#187; Go to my Starbucks eGift card page</a>
+</p>
+<%= render 'footer' %>

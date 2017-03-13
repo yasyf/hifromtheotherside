@@ -1,11 +1,22 @@
 <p>Hey <%= @user_1.first_name %> and <%= @user_2.first_name %>,</p>
 <p>
-  Thanks for taking the time to have a conversation. One of you voted for <%= @user_1.supported_nice %>, and the other for <%= @user_2.supported_nice %>.
-  We'll leave it up to you two to find a time for
-  <% if @locations[0][:city] == @locations[1][:city] %>
-    a video chat, or even an in-person conversation – both of you are in <%= @locations[0][:city] %>.
+  Thanks for signing up for a <a href="https://www.hifromtheotherside.com/">Hi From The Other Side</a> conversation. One of you voted for <%= @user_1.supported_nice %>, and the other for <%= @user_2.supported_nice %> - here's a <a href="https://www.hifromtheotherside.com/guide">conversation guide</a> we put together to help get you started.
+</p>
+<p>
+  <% if @same_city %>
+    Both of you live in <%= @locations[0][:city] %>,
+
+    <% if @nearest_starbucks.present? %>
+    and the Starbucks at <%= @nearest_starbucks %> should be close to both of you.
+    <% else %>
+    and should have a Starbucks you can both get to.
+    <% end %>
+
+    If you decide to meet at any Starbucks in <%= @locations[0][:city] %>, your coffee is on the house! Look out for a seperate email on how to get your free coffees.
+
+    If you can't meet up for a coffee, we recommend a video chat.
   <% else %>
-    a video chat or phone call. We highly recommend the video chat!
+    We'll leave it up to you two to find a time for a video chat or phone call. We highly recommend the video chat!
     <% if @locations[0][:time_zone] && @locations[1][:time_zone] %>
       <% if @locations[0][:time_zone] == @locations[1][:time_zone] %>
         You're both in the <%= @locations[0][:time_zone_nice] %> time zone, which is awesome!
@@ -15,9 +26,5 @@
     <% end %>
   <% end %>
 </p>
-<p>
-  You can find conversation guide we put together to help get you started <a href="https://www.hifromtheotherside.com/guide">here</a>.
-</p>
 <p>We'll follow up in about a week to see how it went!</p>
-<p>Thanks,</p>
-<p>Henry and the HFTOS team</p>
+<%= render 'footer' %>

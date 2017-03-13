@@ -5,6 +5,7 @@ class Pairing < ApplicationRecord
   validates :user_2, uniqueness: { scope: :user_1 }
 
   enum status: [:unknown, :bounced, :delivered, :opened, :clicked]
+  has_many :gift_cards
 
   def self.pair!(user_1, user_2)
     return unless user_1 != user_2
@@ -36,7 +37,16 @@ class Pairing < ApplicationRecord
   end
 
   def email!
-    PairingMailer.paired_email(self).deliver_now
+    locations = user_locations
+    PairingMailer.paired_email(self, locations).deliver_now
+    if locations[0][:city] == locations[1][:city]
+      PairingMailer.user_1_starbucks_email(self).deliver_now
+      PairingMailer.user_2_starbucks_email(self).deliver_now
+    end
+  end
+
+  def starbucks_gift_card
+    claim_gift_card! 'Starbucks'
   end
 
   def process_event!(params)
@@ -44,8 +54,29 @@ class Pairing < ApplicationRecord
     status = [self.class.statuses[self.status], self.class.statuses[params[:event]]].max
     update! status: status
 
-    user = [user_1, user_2].find { |u| u.email == params[:recipient] }
+    user = users.find { |u| u.email == params[:recipient] }
     return unless user.present?
     user.update! geolocation: params[:geolocation], ip: params[:ip], info: params['client-info']
+  end
+
+  def users
+    [user_1, user_2]
+  end
+
+  private
+
+  def user_locations
+    locations = users.map { |u| u.zip.present? ? (ZipCodes.identify(u.zip) || {}) : {} }
+    locations.each do |h|
+      h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }.first if h[:time_zone].present?
+    end
+  end
+
+  def claim_gift_card!(store)
+    card = gift_cards.where(store: store).first
+    return card if card.present?
+    card = GiftCard.where(store: store, pairing_id: nil).first
+    card.update! pairing: self
+    card
   end
 end
