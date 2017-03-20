@@ -5,7 +5,7 @@ class PairingMailer < ApplicationMailer
     @user_1 = pairing.user_1
     @user_2 = pairing.user_2
     @locations = user_locations
-    @same_city = @locations[0][:city] == @locations[1][:city]
+    @same_city = pairing.same_city?
     @nearest_starbucks = @user_1.nearest_starbucks if @same_city
 
     to = pairing.users.map { |u| "#{u.name} <#{u.email}>" }
