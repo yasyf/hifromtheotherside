@@ -42,6 +42,8 @@ gem 'mailgun_rails', git: 'https://github.com/jorgemanrubia/mailgun_rails.git', 
 gem 'zip-codes'
 gem 'mailgun-ruby', '~> 1.1.2'
 gem 'httparty'
+gem 'redis'
+gem 'redis-rails'
 
 group :production do
   gem 'puma'

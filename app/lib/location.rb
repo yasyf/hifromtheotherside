@@ -11,7 +11,7 @@ class Location
 
   def nearest_branch(name)
     return nil unless geodode.present?
-    Rails.cache.fetch("#{self.class.name}/#{@zip}/nearest_branch/#{name}") do
+    Rails.cache.fetch("#{self.class.name}/#{@zip}/nearest_branch/#{name}", expires_in: 1.month) do
       query = {
         key: ENV['GOOGLE_PLACES_API_KEY'],
         location: "#{latlng['lat']},#{latlng['lng']}",
@@ -32,7 +32,7 @@ class Location
   end
 
   def geodode
-    @geodode ||= Rails.cache.fetch("#{self.class.name}/#{@zip}/geocode") do
+    @geodode ||= Rails.cache.fetch("#{self.class.name}/#{@zip}/geocode", expires_in: 1.month) do
       query = {key: ENV['GOOGLE_GEOCODING_API_KEY'], components: "postal_code:#{@zip}"}
       url = "https://maps.googleapis.com/maps/api/geocode/json?#{query.to_query}"
       make_google_call url
