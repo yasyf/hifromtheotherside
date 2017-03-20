@@ -17,6 +17,13 @@ class Pairing < ApplicationRecord
     pairing
   end
 
+  def self.pair(user_1, user_2)
+    return unless user_1 != user_2
+    user_1_id = [user_1.id, user_2.id].min
+    user_2_id = [user_1.id, user_2.id].max
+    new user_1_id: user_1_id, user_2_id: user_2_id
+  end
+
   def self.from_event(params)
     message_id = params['Message-Id'] ||
                 params['message-id'] ||
@@ -37,8 +44,7 @@ class Pairing < ApplicationRecord
   end
 
   def email!
-    locations = user_locations
-    PairingMailer.paired_email(self, locations).deliver_now
+    PairingMailer.paired_email(self, user_locations).deliver_now
     if same_city? && starbucks_gift_card.present?
       PairingMailer.user_1_starbucks_email(self).deliver_now
       PairingMailer.user_2_starbucks_email(self).deliver_now
@@ -46,7 +52,7 @@ class Pairing < ApplicationRecord
   end
 
   def same_city?
-    locations[0][:city].present? && locations[0][:city] == locations[1][:city]
+    user_locations[0][:city].present? && user_locations[0][:city] == user_locations[1][:city]
   end
 
   def starbucks_gift_card
@@ -70,9 +76,11 @@ class Pairing < ApplicationRecord
   private
 
   def user_locations
-    locations = users.map { |u| u.zip.present? ? (ZipCodes.identify(u.zip) || {}) : {} }
-    locations.each do |h|
-      h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }.first if h[:time_zone].present?
+    @user_locations ||= begin
+      locations = users.map { |u| u.zip.present? ? (ZipCodes.identify(u.zip) || {}) : {} }
+      locations.each do |h|
+        h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }.first if h[:time_zone].present?
+      end
     end
   end
 

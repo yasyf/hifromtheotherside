@@ -134,7 +134,7 @@
             <% end %>
           <% elsif user.possible_pairing.present? %>
             <h4>Suggested Pairing</h4>
-            <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported_nice %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>. This pairing <b>is<%= ' not' unless user.possible_pairing.same_city? %></b> eligible for a Starbucks code.</p>
+            <p>We suggest pairing <%= user.first_name %> with <%= user.possible_pairing.name %>, a <%= user.possible_pairing.supported_nice %> supporter<% if user.possible_pairing.zip.present? %> who lives at <%= user.possible_pairing.zip %><% end %>. This pairing <b>is<%= ' not' unless Pairing.pair(user, user.possible_pairing).same_city? %></b> eligible for a Starbucks code.</p>
             <p><%= user.possible_pairing.background %></p>
           <% end %>
         </div>
