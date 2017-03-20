@@ -148,6 +148,12 @@ class User < ActiveRecord::Base
       .where(desired: supported_to_desired)
       .where.not(id: self.id)
 
+    # Similar zip
+    if self.zip.present?
+      zip_scope = scope.zip_starts_with(self.zip.to_s[0..-3])
+      scope = zip_scope if zip_scope.count > 0
+    end
+
     # Combinations of keywords
     words = key_words
     while words.present?
