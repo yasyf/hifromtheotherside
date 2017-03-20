@@ -50,6 +50,7 @@
         <td>Zip</td>
         <td>Supported</td>
         <td>Desired</td>
+        <td>Starbucks</td>
         <% if @paired %>
           <td>Status</td>
         <% else %>
@@ -66,6 +67,7 @@
           <td><%= user.zip %></td>
           <td><%= user.supported.titleize %></td>
           <td><%= user.desired.titleize %></td>
+          <td><%= user.nearest_starbucks.present? ? "&#10003;" : "&#10007;" %></td>
           <% if @paired %>
             <td><%= user.pairings.last.status %></td>
           <% else %>

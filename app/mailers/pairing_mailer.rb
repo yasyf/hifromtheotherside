@@ -6,7 +6,7 @@ class PairingMailer < ApplicationMailer
     @user_2 = pairing.user_2
     @locations = user_locations
     @same_city = @locations[0][:city] == @locations[1][:city]
-    @nearest_starbucks = Location.new(@user_1.zip).nearest_starbucks if @same_city
+    @nearest_starbucks = @user_1.nearest_starbucks if @same_city
 
     to = pairing.users.map { |u| "#{u.name} <#{u.email}>" }
     mail to: to, subject: 'Your "Hi From The Other Side" Match!'

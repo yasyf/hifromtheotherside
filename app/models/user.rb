@@ -132,6 +132,7 @@ class User < ActiveRecord::Base
   end
 
   def nearest_starbucks
+    return nil unless zip.present?
     Rails.cache.fetch("#{cache_key}/nearest_starbucks", expires_in: 1.week) { Location.new(zip).nearest_starbucks }
   end
 
