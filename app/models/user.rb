@@ -131,6 +131,10 @@ class User < ActiveRecord::Base
     !supported.to_sym.in? [:trump, :clinton]
   end
 
+  def nearest_starbucks
+    Rails.cache.fetch("#{cache_key}/nearest_starbucks") { Location.new(zip).nearest_starbucks }
+  end
+
   private
 
   def key_words
