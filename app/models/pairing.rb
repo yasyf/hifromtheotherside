@@ -79,7 +79,7 @@ class Pairing < ApplicationRecord
     @user_locations ||= begin
       locations = users.map { |u| u.zip.present? ? (ZipCodes.identify(u.zip) || {}) : {} }
       locations.each do |h|
-        h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }.first if h[:time_zone].present?
+        h[:time_zone_nice] = ActiveSupport::TimeZone::MAPPING.find {|_, v| v == h[:time_zone] }&.first if h[:time_zone].present?
       end
     end
   end
