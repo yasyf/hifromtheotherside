@@ -44,11 +44,12 @@ class Pairing < ApplicationRecord
   end
 
   def email!
-    PairingMailer.paired_email(self, user_locations).deliver_now
+    email = PairingMailer.paired_email(self, user_locations).deliver_now
     if same_city? && starbucks_gift_card.present?
       PairingMailer.user_1_starbucks_email(self).deliver_now
       PairingMailer.user_2_starbucks_email(self).deliver_now
     end
+    email
   end
 
   def same_city?
