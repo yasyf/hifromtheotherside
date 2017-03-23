@@ -95,6 +95,10 @@ class User < ActiveRecord::Base
     states.each_with_object(Hash.new(0)) { |state, counts| counts[state] += 1 }
   end
 
+  def self.searchable_columns
+    [:email, :first_name, :last_name]
+  end
+
   def completed?
     desired.present? && supported.present?
   end

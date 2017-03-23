@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312233409) do
+ActiveRecord::Schema.define(version: 20170323202659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,9 +66,22 @@ ActiveRecord::Schema.define(version: 20170312233409) do
     t.json     "geolocation"
     t.string   "ip"
     t.json     "info"
+    t.index "email gist_trgm_ops", name: "trgm_email_indx", using: :gist
+    t.index "first_name gist_trgm_ops", name: "trgm_first_name_indx", using: :gist
+    t.index "last_name gist_trgm_ops", name: "trgm_last_name_indx", using: :gist
+    t.index "to_tsvector('english'::regconfig, (email)::text)", name: "users_to_tsvector_idx1", using: :gin
+    t.index "to_tsvector('english'::regconfig, (email)::text)", name: "users_to_tsvector_idx4", using: :gin
+    t.index "to_tsvector('english'::regconfig, (first_name)::text)", name: "users_to_tsvector_idx2", using: :gin
+    t.index "to_tsvector('english'::regconfig, (first_name)::text)", name: "users_to_tsvector_idx5", using: :gin
+    t.index "to_tsvector('english'::regconfig, (last_name)::text)", name: "users_to_tsvector_idx3", using: :gin
+    t.index "to_tsvector('english'::regconfig, (last_name)::text)", name: "users_to_tsvector_idx6", using: :gin
     t.index "to_tsvector('english'::regconfig, background)", name: "users_to_tsvector_idx", using: :gin
+    t.index "zip text_pattern_ops", name: "index_users_on_zip_text_pattern_ops", using: :btree
+    t.index ["desired"], name: "index_users_on_desired", using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["supported"], name: "index_users_on_supported", using: :btree
+    t.index ["zip"], name: "index_users_on_zip", using: :btree
   end
 
 end
