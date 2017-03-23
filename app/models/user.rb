@@ -114,7 +114,8 @@ class User < ActiveRecord::Base
   def possible_pairing
     @possible_pairing ||= begin
       other = Rails.cache.fetch("#{cache_key}/pairing") { find_pairing }
-      other = Rails.cache.fetch("#{cache_key}/pairing", force: true) { find_pairing } if other&.paired?
+      refresh = other.blank? || User.where(id: other.id).count == 0 || other.paired?
+      other = Rails.cache.fetch("#{cache_key}/pairing", force: true) { find_pairing } if refresh
       other
     end
   end
