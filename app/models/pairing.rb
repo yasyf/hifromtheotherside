@@ -53,7 +53,8 @@ class Pairing < ApplicationRecord
   end
 
   def same_city?
-    user_locations[0][:city].present? && user_locations[0][:city] == user_locations[1][:city]
+    users.first.zip.to_s[0..-2] == users.last.zip.to_s[0..-2] or
+      user_locations[0][:city].present? && user_locations[0][:city] == user_locations[1][:city]
   end
 
   def starbucks_gift_card
