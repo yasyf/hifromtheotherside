@@ -1,6 +1,10 @@
 require 'open-uri'
 
 class User < ActiveRecord::Base
+  has_many :user_groups
+  has_many :groups, -> { distinct }, through: :user_groups
+  belongs_to :event
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook]
@@ -139,6 +143,25 @@ class User < ActiveRecord::Base
   def nearest_starbucks
     return nil unless zip.present?
     Rails.cache.fetch("#{cache_key}/nearest_starbucks", expires_in: 1.week) { Location.new(zip).nearest_starbucks }
+  end
+
+  def country_id
+    self.groups.country.first.id
+  end
+
+  def country_id=(country_id)
+    return unless country_id.present?
+    self.user_groups.where(group: self.groups.country).destroy_all
+    self.groups << Group.find(country_id)
+  end
+
+  def event_code
+    self.event&.code
+  end
+
+  def event_code=(event_code)
+    return unless event_code.present?
+    self.event = Event.where(code: event_code).first!
   end
 
   private

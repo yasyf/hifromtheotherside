@@ -14,12 +14,16 @@ class ResponsesController < ApplicationController
     @user = current_user
   end
 
+  def questions
+    @user = current_user
+  end
+
   def create
     current_user.update user_params
     if current_user.valid?
       current_user.save!
-      flash[:notice] = "Preferences saved!"
-      redirect_to action: :index
+      flash[:notice] = "Bio saved!"
+      redirect_to action: :questions
     else
       flash[:alert] = current_user.errors.messages
       redirect_to action: :new
@@ -29,6 +33,6 @@ class ResponsesController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:zip, :supported, :desired, :background, :email)
+    params.require(:user).permit(:zip, :supported, :desired, :background, :email, :country_id, :event_code)
   end
 end

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  yes_label: MyString
+  no_label: MyString
+  preference: one
+
+two:
+  yes_label: MyString
+  no_label: MyString
+  preference: two

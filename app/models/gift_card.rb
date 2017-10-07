@@ -3,6 +3,4 @@ class GiftCard < ApplicationRecord
   validates :number, presence: true, uniqueness: true
 
   belongs_to :pairing
-
-
 end

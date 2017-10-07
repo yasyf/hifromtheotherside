@@ -1,0 +1,46 @@
+default: &default
+  yes_label: 'Yes'
+  no_label: 'No'
+
+questions:
+  - preference: Environment
+    text: Should we be addressing climate change? Is it worth the cost?
+    <<: *default
+  - preference: Inequality
+    text: Should the government work to decrease inequality with more taxes and social benefits?
+    <<: *default
+  - preference: Immigration
+    text: How should we approach the issue of undocumented immigrants?
+    yes_label: Provide a path to citizenship
+    no_label: Deport undocumented immigrants
+  - preference: Refugees
+    text: Should our country accept more or fewer refugees than it currently does?
+    yes_label: Accept more
+    no_label: Accept Fewer
+  - preference: National Security
+    text: Should we prioritize increasing military spending or social spending?
+    yes_label: More military spending
+    no_label: More social spending
+  - preference: Same-Sex Marriage
+    text: Should same-sex marriage be legal?
+    <<: *default
+  - preference: Gun Control
+    text: Do we need more gun regulation?
+    yes_label: More regulation
+    no_label: Less regulation
+    country: USA
+  - preference: Healthcare
+    text: Should we increase or decrease current levels of government funding and involvement in our nation’s healthcare system?
+    yes_label: Increase
+    no_label: Decrease
+    country: USA
+  - preference: Religion
+    text: Should religion and religious institutions play more or less of a role in public life?
+    yes_label: More
+    no_label: Less
+    country: USA
+  - preference: Abortion
+    text: Is abortion ever justifiable?
+    yes_label: No, it is wrong most or all of the time
+    no_label: Yes, it should be allowed
+    country: USA

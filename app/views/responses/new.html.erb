@@ -16,6 +16,10 @@
     <p class="help-block">If you get matched, we'll send an email introducing you two.</p>
     <%= text_field(:user, :email, class: 'form-control', required: true) %>
   </div>
+    <div class="form-group required">
+    <%= label_tag(:country_id, "Country") %>
+    <%= select(:user, :country_id, Group.keys(:country), { include_blank: true }, { class: 'form-control', required: true }) %>
+  </div>
   <div class="form-group required">
     <%= label_tag(:zip, "Zip Code") %>
     <p class="help-block">Enter your zip code if you want the chance to be matched with someone close to you for a face-to-face conversation.</p>
@@ -30,21 +34,13 @@
     <%= label_tag(:desired, "I would like to speak to:") %>
     <%= select(:user, :desired, User.desireds.keys.map { |k| [User::DESIRED_CANDIDATES[k], k] }.shuffle, { include_blank: true }, { class: 'form-control', required: true }) %>
   </div>
-  <div class="form-group required">
-    <%= label_tag(:background, "A bit about you") %>
-    <p class="help-block">What did you want to be when you grew up? How did you come to that idea? Any other comments?</p>
-    <%= text_area(:user, :background, class: 'form-control', required: true) %>
+    <div class="form-group">
+    <%= label_tag(:event_code, "Signup Code") %>
+    <p class="help-block">If you have one.</p>
+    <%= text_field(:user, :event_code, class: 'form-control') %>
   </div>
    <div class="form-group">
-    <%= label_tag(:submit, "Click the button below to agree and submit!") %>
-    <p class="help-block">Even if I have strong feelings about the election, I will come to the conversation with a learning attitude, not a debating attitude.</p>
-    <div class="checkbox">
-      <%= label_tag(:submit) do %>
-        <%= check_box(:user, :subscribe?) %>
-        <p class="text-muted">Subscribe me to the Hi From The Other Side newsletter so I can receive updates on the project.</p>
-      <% end %>
-    </div>
-    <%= submit_tag("I Agree!", class: 'btn btn-default btn-lg btn-block') %>
+    <%= submit_tag("Next", class: 'btn btn-default btn-lg btn-block') %>
   </div>
   <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
 </form>
