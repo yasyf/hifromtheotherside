@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
   end
 
   def self.state_counts(scope=where.not(zip: ""))
-    states = where.not(zip: "").map { |u| ZipCodes.identify(u.zip) }.compact.map { |h| h[:state_code] }
+    states = scope.map { |u| ZipCodes.identify(u.zip) }.compact.map { |h| h[:state_code] }
     states.each_with_object(Hash.new(0)) { |state, counts| counts[state] += 1 }
   end
 
