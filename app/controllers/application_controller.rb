@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
     end
     authenticate_user!
   end
+
+  def letsencrypt
+      render text: "umjwn4rfyoL0km2KHOfaYmN2M_jHXlCpOsLntKDMKgw.AHWiAAL-FVqxtSipUIJmj6LTEy4QEzaAsd0iUXPLu7U"
+  end
 end
